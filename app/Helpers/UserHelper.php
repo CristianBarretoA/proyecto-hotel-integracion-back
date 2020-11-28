@@ -1,0 +1,48 @@
+<?php
+
+
+namespace App\Helpers;
+
+
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+
+class UserHelper
+{
+
+    /**
+     * Get a validator from de data of the request
+     *
+     * @param array $data
+     * @return \Illuminate\Contracts\Validation\Validator|\Illuminate\Validation\Validator
+     */
+    public static function validator(array $data)
+    {
+        return Validator::make($data, [
+            'name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'identification' => ['required', 'numeric'],
+            'identification_type' => ['required', 'string'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+    }
+
+    /**
+     * Create a new user
+     * @param array $data
+     * @return User
+     */
+    public static function create(array $data)
+    {
+        return User::create([
+            'name' => $data['name'],
+            'last_name' => $data['last_name'],
+            'identification' => $data['identification'],
+            'identification_type' => $data['identification_type'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+        ]);
+    }
+}

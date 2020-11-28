@@ -11,6 +11,14 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    const CEDULA_DE_CIUDADANIA = 'Cedula de Ciudadania';
+    const TARJETA_DE_IDENTIDAD = 'Tarjeta de Identidad';
+
+    const TYPES = [
+        self::CEDULA_DE_CIUDADANIA,
+        self::TARJETA_DE_IDENTIDAD
+    ];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -18,6 +26,9 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'last_name',
+        'identification',
+        'identification_type',
         'email',
         'password',
     ];
@@ -39,5 +50,6 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'identification'=> 'integer'
     ];
 }

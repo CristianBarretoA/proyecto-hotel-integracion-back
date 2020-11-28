@@ -2,32 +2,39 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\UserHelper;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return string[]
+     * @return Collection
      */
     public function index()
     {
-        return [
-            'saludo' => 'Hola Mundo'
-        ];
+        $users = User::all();
+        return collect($users);
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @return Collection
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request)
     {
-        //
+        UserHelper::validator($request->all())->validate();
+
+        $user = UserHelper::create($request->all());
+
+        return collect($user);
+
     }
 
     /**
